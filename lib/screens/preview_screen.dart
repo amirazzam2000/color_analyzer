@@ -1,8 +1,14 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:color_analayzer/API_auth/recognizer.dart';
 import 'package:color_analayzer/screens/camera_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:color_analayzer/screens/captures_screen.dart';
+import 'package:googleapis/vision/v1.dart';
+import 'package:flutter/src/widgets/image.dart' as img;
+import 'dart:io' as Io;
+
 
 class PreviewScreen extends StatelessWidget {
   final File imageFile;
@@ -12,6 +18,18 @@ class PreviewScreen extends StatelessWidget {
     required this.imageFile,
     required this.fileList,
   });
+
+  Future<String?> getColorName() async{
+    final bytes = await imageFile.readAsBytes();
+    WebLabel? lable = await Recognizer().search(base64Encode(bytes));
+
+
+    String? result = lable?.label ?? "No Lables";
+
+
+    return result;
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +41,7 @@ class PreviewScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Center(
-                      child: Image.file(imageFile),
+                      child: img.Image.file(imageFile),
                     ),
                   ),
                 ],
@@ -57,6 +75,25 @@ class PreviewScreen extends StatelessWidget {
                     textStyle: const TextStyle(fontSize: 20)
                   ),
                 ),
+              ),
+              FutureBuilder<String?>(
+                future: getColorName(),
+                initialData: 'Color_Name',
+                builder: (context, snapshot) {
+                  if(snapshot.hasData){
+                    return
+                      Center(
+                        child: Text(
+                          snapshot.data!,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      );
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
               ),
             ],
         ),

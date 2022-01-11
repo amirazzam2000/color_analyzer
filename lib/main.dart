@@ -3,6 +3,7 @@ import 'package:camera/camera.dart';
 import 'screens/camera_screen.dart';
 
 List<CameraDescription> cameras = [];
+const GOOGLE_APPLICATION_CREDENTIALS = String.fromEnvironment('GOOGLE_APPLICATION_CREDENTIALS', defaultValue: 'SOME_DEFAULT_VALUE');
 
 Future<void> main() async {
   try {

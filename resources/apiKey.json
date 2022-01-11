@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "fluttercloudvision",
+  "private_key_id": "3a7a266033df472549e0b0aecb7b2b6a4b3a15c6",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDJbZjyxUvMmK8E\nucX6iO0DuQQlRvZ2QwU3eud8jLI1Pn+0vgASs44/suCf0XNM/ljjHtPOq+pxKDjT\nPmJ7T2psj6XT+xKF768af01wQZsnrwAzz5M37W9YS/wjY02UwytgXUc3rQaREmyX\nsnXe8R56+sng4ARl5vK/H7OilOWcpe9rR4uJL2twihPYuMlYqnqOCEtGWm77DXck\nPF5+PJaE4sWdTPQdyYJzkPLH8quXpxA1OJRBueLyH4+sgf4O5bYFsgABJS2u2S89\nu+Wk7swGfePpFE0IbtCw3kDa5WmYnXbCbJpLyGZNYZP8qaesnTtVlFpRHfIRpGyG\neagoSnhBAgMBAAECggEAGiVAeOSsp9g6wYuGm/RJhZXuqJMLO0MMSo0IvqU5nYkp\nBPIzqrnFUVXb68rBY2FRctulxRoSEpGUvLDIkjZ2+zPzI66fkySPL0qOZ++QHujL\nhy4eryAB961XQ1WotJJXz0iUTbEHHO4OC+vFeoSEPxTN/wM89ugxIqdQBx66Jii1\nwFz1jhcNWsaTBi3OCdpsw/k1mijAS5af6O3ap+7jvIZAcbP/zgojhUzyicH9kci4\n1EcRZlbqeyH03fe4V7S5zeGqv+wAAl7KQMr94OXNGkGmw+fk8DXkpD5mVuUf2miX\n6GhYxF8IZRmGF0nDvnWCKic/uBgIwqiZY4Cu6pgGxQKBgQDvWgKADSUlBZ4DmN63\npDNnvjcNDWBWkJYTCqMDxj8WTp4YIb94m58eC4Znf8f1EhwW9pQInxYonKQ3/OlG\nvHwDh8bTsIwVY9WHApir3Bhrjm1jtEBg6ITeHixEJIsJo1FpvOgTKz65LrG9rYvd\nw8MDtMLzlxSUv6qkFta1RE92bQKBgQDXcE6UW2Cu9BdxLmj+LUcQF2N5TPDnMeKP\n+4rgcG0Jx9bxFu+YaY7hheM7P7mFQefqLN4zIeOVraLD7Yq6bH6csXhYsWMWEerd\nHFoS7eZk68/6qeNAlk7H9rP8YzCmYGb/cRSDfobPMIUVTvZ0iM7iHpUVCr2KSh4x\n6V7/4fk0pQKBgQCjP3XzFoQeIx2qAGrvP9wbxv3PNi9d+1GQfTHAEkfXFBn6BZKN\nVT8Kg/vQvbOI8CgedWF0G+VGH8hVs3b72vSOh93RZlm1ARmS8u9kUEKLoWH0ne1G\n63Ar+tJgS7hVA4I0pzZ2VIl8Tl/GKgb6Y1mwPmq1L3dHGQ7uyfD5QzUbZQKBgCcd\nifbfvGcnhFYVYhS8LcnbJUFx2c9wPD1+I1Hqt7Ft6jWtv2TBzaJex8oLIOjz9WKM\nMO/BuGuFsia2q1h7uGVEx5/63Q21xRnOOwBy10D9m65cSBmC8NzXiwhJDh03JZw9\ncMcLIvjdS1x6EL9J0540hUbjw1QnbuILCCeXZMLNAoGAB/y3uhDqrSlKoP691aBf\nm1fCh5r71Ohx1m61haTxy21dnra4+Rtrju5SwrOAKGjeaMeOuHDT6iC6aa2gm0aH\nLgyFDZ9dZsXXgtm7tk+bv6jNTophNWh8KqAt7M9NJ08N6qA5WiDJxw6gZcDdNw7N\n1gkf6Cd2/qxvsn5C4wtb8og=\n-----END PRIVATE KEY-----\n",
+  "client_email": "fluttervision@fluttercloudvision.iam.gserviceaccount.com",
+  "client_id": "110711396327786514783",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/fluttervision%40fluttercloudvision.iam.gserviceaccount.com"
+}
