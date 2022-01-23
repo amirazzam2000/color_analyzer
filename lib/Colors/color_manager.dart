@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:color_analayzer/Colors/color_data_object.dart';
+import 'package:color_analayzer/Data/defaults.dart';
 import 'package:http/http.dart';
 
 class ColorManager{
@@ -23,7 +24,8 @@ class ColorManager{
 
   static Future<List<ColorDataObject>> getColorScheme(int r, int g, int b, String schemeName) async {
     print("getting color scheme");
-    var count = 10;
+    var count = Defaults.getDefaults().numberOfColors.round();
+
     var url = SchemeURL + "rgb=rgb("
         + r.toString() + ","
         + g.toString() + ","

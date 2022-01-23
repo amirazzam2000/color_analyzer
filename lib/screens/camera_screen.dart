@@ -1,7 +1,9 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:color_analayzer/Data/defaults.dart';
 import 'package:color_analayzer/screens/captures_screen.dart';
+import 'package:color_analayzer/screens/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:color_analayzer/screens/preview_screen.dart';
@@ -235,6 +237,7 @@ class _CameraScreenState extends State<CameraScreen>
     // Set and initialize the new camera
     onNewCameraSelected(cameras[0]);
     refreshAlreadyCapturedImages();
+    Defaults.getDefaults();
     super.initState();
   }
 
@@ -269,32 +272,35 @@ class _CameraScreenState extends State<CameraScreen>
       child: Scaffold(
         backgroundColor: Colors.black,
         body: _isCameraInitialized
-            ? Column(
+            ? Stack(
           children: [
-            AspectRatio(
-              aspectRatio: mediaSize.aspectRatio, // 1 /controller!.value.aspectRatio,
-              child: Stack(
-                children: [
-                  controller!.buildPreview(),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      8.0,
-                      16.0,
-                      8.0,
-                      0.0,
-                    ),
-                    child:
-                    Column(
+
+            Column(
+              children: [
+                AspectRatio(
+                  aspectRatio: mediaSize.aspectRatio, // 1 /controller!.value.aspectRatio,
+                  child: Stack(
+                    children: [
+                      controller!.buildPreview(),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                          8.0,
+                          16.0,
+                          8.0,
+                          0.0,
+                        ),
+                        child:
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Padding(
                               padding: const EdgeInsets.fromLTRB(
-                                0.0,
-                                8.0,
-                                0.0,
-                                0.0
+                                  0.0,
+                                  8.0,
+                                  0.0,
+                                  0.0
                               ),
                               child: Container(
                                 decoration: const BoxDecoration(
@@ -557,13 +563,29 @@ class _CameraScreenState extends State<CameraScreen>
                         ),
 
 
+                      ),
+                    ],
                   ),
-                ],
+                ),
+              ],
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) =>  SettingsScreen(),
+                  ),
+                );
+              },
+              child: Icon(Icons.settings, size: 30),
+              style: TextButton.styleFrom(
+                  primary: Colors.deepPurple,
+                  //backgroundColor: Colors.,
+                  textStyle: const TextStyle(fontSize: 20)
               ),
             ),
-          ],
-        )
-            : const Center(
+          ]
+        ) : const Center(
           child: Text(
             'LOADING',
             style: TextStyle(color: Colors.white),

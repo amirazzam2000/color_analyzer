@@ -9,15 +9,19 @@ import 'package:color_analayzer/API_auth/recognizer.dart';
 import 'package:color_analayzer/Colors/color_data_object.dart';
 import 'package:color_analayzer/Colors/color_manager.dart';
 import 'package:color_analayzer/Data/defaults.dart';
+import 'package:color_analayzer/Templates/popup_template.dart';
 import 'package:color_analayzer/screens/camera_screen.dart';
 import 'package:color_analayzer/screens/scheme_loader.dart';
 import 'package:expandable_bottom_sheet/expandable_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:color_analayzer/screens/captures_screen.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_beautiful_popup/main.dart';
 import 'package:googleapis/vision/v1.dart';
 import 'package:flutter/src/widgets/image.dart' as img;
 import 'package:flutter/material.dart' as f;
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
 import 'dart:io' as Io;
 
 import 'expandable_colors.dart';
@@ -25,7 +29,7 @@ import 'expandable_colors.dart';
 
 
 
-class PreviewScreen extends StatelessWidget {
+class PreviewScreen extends StatefulWidget {
   final File imageFile;
   final List<File> fileList;
 
@@ -34,14 +38,27 @@ class PreviewScreen extends StatelessWidget {
     required this.fileList,
   });
 
+  @override
+  State<StatefulWidget> createState() => _PreviewState();
+}
+
+class _PreviewState extends State<PreviewScreen>
+{
+  var chosenColor;
+
   Future<Map<String, dynamic>> getColorName() async{
     print("requesting info");
 
-    final bytes = await imageFile.readAsBytes();
+    final bytes = await widget.imageFile.readAsBytes();
     List<ColorDataObject> label = (await Recognizer().search(base64Encode(bytes)));
     label.sort((ColorDataObject a, ColorDataObject b ) => ((b.score * 100) -  (a.score * 100) ).round());
 
     var color = label[0];
+    if (chosenColor == null){
+      Defaults.getDefaults().color = color;
+      chosenColor = color;
+    }
+
 
 
     Map<String, dynamic> results = {
@@ -54,9 +71,9 @@ class PreviewScreen extends StatelessWidget {
 
 
 
-
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
@@ -65,7 +82,7 @@ class PreviewScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Center(
-                      child: img.Image.file(imageFile),
+                      child: img.Image.file(widget.imageFile),
                     ),
                   ),
                 ],
@@ -112,15 +129,16 @@ class PreviewScreen extends StatelessWidget {
                       builder:
                           (BuildContext context, ScrollController scrollController) {
                         return Container(
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               //color: ui.Color(0xFFCAA7FD),
-                              color: ui.Color.fromRGBO(
+                              color: Colors.white,
+                              /*ui.Color.fromRGBO(
                                   snapshot.data!["DominantColor"].rgb.red  - 80 ,
                                   snapshot.data!["DominantColor"].rgb.green - 80,
                                   snapshot.data!["DominantColor"].rgb.blue  - 80,
                                   1
-                              ),
-                              borderRadius: const BorderRadius.vertical(top: (Radius.circular(20))
+                              ),*/
+                              borderRadius: BorderRadius.vertical(top: (Radius.circular(20))
                               )
                           ),
 
@@ -161,66 +179,158 @@ class PreviewScreen extends StatelessWidget {
                                       ),
                                     ),
                                   ),
+
                                   ExpandableColorPallet(
                                     colors: snapshot.data!["DominantColorList"],
                                   ),
 
-                                  const Padding(
-                                    padding: EdgeInsets.fromLTRB( 0, 30, 0, 0,),
-                                    child: Text(
-                                      "Color Schemes: ",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB( 0, 30, 0, 0,),
+                                    child:
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.center ,
+                                          children: [
+
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: TextButton(
+
+                                                onPressed: () {
+                                                  final popup = BeautifulPopup.customize(
+                                                    context: context,
+                                                    build: (options) =>
+                                                        PopUpTemplate(
+
+                                                        options,
+
+                                                    ),
+                                                  );
+                                                  popup.show(
+                                                    title: 'Pick Color: ',
+                                                    content: Container(
+                                                      color: Colors.white,
+                                                      child: Scrollbar(
+                                                        isAlwaysShown: true,
+                                                        child: ListView.builder(
+                                                            itemCount: snapshot.data!["DominantColorList"].length,
+                                                            itemBuilder: (BuildContext context, int index) {
+                                                              return Padding(
+                                                                padding: const EdgeInsets.all(8.0),
+                                                                child: Container(
+                                                                    height: 50,
+                                                                    decoration: BoxDecoration(
+                                                                      borderRadius: BorderRadius.circular(20),
+                                                                      color: ui.Color.fromRGBO(
+                                                                          snapshot.data!["DominantColorList"][index].rgb.red   ,
+                                                                          snapshot.data!["DominantColorList"][index].rgb.green ,
+                                                                          snapshot.data!["DominantColorList"][index].rgb.blue  ,
+                                                                          1
+                                                                      ),
+                                                                    ),
+                                                                    child: Center(
+                                                                      child: TextButton(
+                                                                          onPressed: () {
+                                                                            print("pressed " + snapshot.data!["DominantColorList"][index].name);
+                                                                            Defaults.getDefaults().color = snapshot.data!["DominantColorList"][index];
+                                                                            Navigator.pop(context);
+                                                                            setState(() {
+                                                                              chosenColor = Defaults.getDefaults().color;
+                                                                            });
+                                                                          },
+                                                                          child: Text(
+                                                                              snapshot.data!["DominantColorList"][index].name,
+                                                                              style: TextStyle(
+                                                                                color: snapshot.data!["DominantColorList"][index].hsl.luminosity > 40? Colors.black: Colors.white,
+                                                                                ),
+                                                                          ),
+                                                                      ),
+                                                                    )),
+                                                              );
+                                                            }),
+                                                      ),
+                                                    ),
+                                                    actions: [
+                                                      popup.button(
+                                                        label: 'Close',
+                                                        onPressed: Navigator.of(context).pop,
+                                                      ),
+                                                    ],
+                                                  );
+
+                                                },
+                                                child: Container(
+                                                  height: 30,
+                                                  width: 30,
+                                                  decoration: BoxDecoration(
+                                                    color: ui.Color.fromRGBO(
+                                                        chosenColor.rgb.red,
+                                                        chosenColor.rgb.green,
+                                                        chosenColor.rgb.blue,
+                                                        1
+                                                    ),
+                                                    borderRadius: BorderRadius.circular(20),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const Text(
+                                              "Color Schemes: ",
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+
                                   ),
+
                                   ExpandableColorScheme(
                                     schemeName: 'monochrome',
-                                    color: snapshot.data!["DominantColor"],
+                                    color: chosenColor,
 
                                   ),
 
                                   ExpandableColorScheme(
                                     schemeName: 'monochrome-dark',
-                                    color: snapshot.data!["DominantColor"],
+                                    color: chosenColor,
 
                                   ),
 
                                   ExpandableColorScheme(
                                     schemeName: 'monochrome-light',
-                                    color: snapshot.data!["DominantColor"],
+                                    color: chosenColor,
 
                                   ),
 
                                   ExpandableColorScheme(
                                     schemeName: 'analogic',
-                                    color: snapshot.data!["DominantColor"],
+                                    color: chosenColor,
 
                                   ),
 
                                   ExpandableColorScheme(
                                     schemeName: 'complement',
-                                    color: snapshot.data!["DominantColor"],
+                                    color: chosenColor,
 
                                   ),
 
                                   ExpandableColorScheme(
                                     schemeName: 'analogic-complement',
-                                    color: snapshot.data!["DominantColor"],
+                                    color: chosenColor,
 
                                   ),
 
                                   ExpandableColorScheme(
                                     schemeName: 'triad',
-                                    color: snapshot.data!["DominantColor"],
+                                    color: chosenColor,
 
                                   ),
 
                                   ExpandableColorScheme(
                                     schemeName: 'quad',
-                                    color: snapshot.data!["DominantColor"],
+                                    color: chosenColor,
 
                                   ),
 

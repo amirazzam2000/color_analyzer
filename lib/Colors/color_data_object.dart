@@ -41,8 +41,6 @@ class ColorDataObject{
   late HSL hsl;
   late CMYK cmyk;
   late double score;
-
-
   late String name;
 
   factory ColorDataObject.fromJson(Map<String, dynamic> json) =>
@@ -50,7 +48,7 @@ class ColorDataObject{
         hex: json["hex"]["value"],
         rgb: new RGB(json["rgb"]["r"], json["rgb"]["g"], json["rgb"]["b"]),
         hsv: new HSV(json["hsv"]["h"], json["hsv"]["s"], json["hsv"]["v"]),
-        cmyk: new CMYK(json["cmyk"]["c"], json["cmyk"]["m"], json["cmyk"]["y"], json["cmyk"]["k"]),
+        cmyk: new CMYK(json["cmyk"]["c"]?? 0, json["cmyk"]["m"]?? 0, json["cmyk"]["y"]?? 0, json["cmyk"]["k"]?? 0),
         name: json["name"]["value"],
         hsl: new HSL(json["hsl"]["h"], json["hsl"]["s"], json["hsl"]["l"]),
       );

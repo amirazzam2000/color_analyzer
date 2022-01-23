@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:color_analayzer/Colors/color_data_object.dart';
 import 'package:color_analayzer/Colors/color_manager.dart';
+import 'package:color_analayzer/Data/defaults.dart';
 import 'package:flutter/material.dart' as f;
 import 'package:googleapis/docs/v1.dart' as v;
 import 'package:googleapis/vision/v1.dart';
@@ -22,7 +23,7 @@ class Recognizer {
                 "image": {"content": image},
                 "features": [
                     {
-                        "maxResults": 20,
+                        "maxResults": Defaults.getDefaults().numberOfColors.round(),
                         "type": "IMAGE_PROPERTIES"
                     }
                 ],

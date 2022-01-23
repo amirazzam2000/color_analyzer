@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 
 import 'package:color_analayzer/Colors/color_data_object.dart';
 import 'package:color_analayzer/Colors/color_manager.dart';
+import 'package:color_analayzer/Data/defaults.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart' as f;
 import 'package:googleapis/vision/v1.dart';
 
 import 'expandable_colors.dart';
+
 
 class ExpandableColorScheme extends StatefulWidget {
   ColorDataObject color;
@@ -47,7 +49,7 @@ class _ExpandableColorSchemeState extends State<ExpandableColorScheme> {
   }
 
   Widget _buildPanel() {
-    return
+    return Defaults.getDefaults().isSchemeChecked(widget.schemeName) ?
       ExpansionTile(
         expandedAlignment: Alignment(0.0, 0.0),
         title: Padding(
@@ -88,7 +90,8 @@ class _ExpandableColorSchemeState extends State<ExpandableColorScheme> {
             )
 
         ],
-      );
+      ) :
+    Container();
   }
 
 
